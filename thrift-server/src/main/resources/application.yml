@@ -1,0 +1,34 @@
+server:
+  port: 8080
+
+ribbon:
+  ServerListRefreshInterval: 1000
+
+endpoints:
+  health:
+    sensitive: true
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+
+logging:
+  level:
+    org.springframework.cloud.consul: DEBUG
+
+spring:
+  sleuth:
+    enabled: true
+    metrics:
+      enabled: true
+
+bbthriftserver:
+  connectTimeout: 3000
+  readTimeout: 3000
+  maxRetries: 1 # if call fail,it will try to recall times
+  endpoint:   # if in cloud env,should be set empty,if not,should be set a fixed address
+
+thrift:
+  client:
+    max:
+      poolobject: 10 # pool object num,default is ten

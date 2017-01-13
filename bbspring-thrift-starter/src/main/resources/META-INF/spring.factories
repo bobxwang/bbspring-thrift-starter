@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+bb.spring.boot.thrift.server.ThriftServerAutoConfiguration,\
+bb.spring.boot.thrift.client.ThriftClientAutoConfiguration,\
+bb.spring.boot.thrift.client.ThriftPoolAutoConfiguration,\
+bb.spring.boot.thrift.client.ThriftClientAnnotationBeanPostProcessor

@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: bbthriftserver
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      config:
+        enabled: false
+      discovery:
+        health-check-path: /health
+        health-check-interval: 30s
+        tags: dev
+        instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+        heartbeat:
+          enabled: true
+        server-list-query-tags:
+          fc-risk-open-api: dev
