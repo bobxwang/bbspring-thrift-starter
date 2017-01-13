@@ -39,3 +39,7 @@
 * 扩展**TProtocol**支持调用信息采集操作
 * 扩展**TProcessor**支持信息采集操作及安全监测
 * 服务请求链路上下文调用链路传递
+
+#### 工程简述
+* thrift-definition thrift定义文件所在工程
+* thrift-server是一个关于如何使用的例子，需要在本地启动一个consul agent，里面的常规restcontroller中模拟一个向thriftcontroller请求的例子
