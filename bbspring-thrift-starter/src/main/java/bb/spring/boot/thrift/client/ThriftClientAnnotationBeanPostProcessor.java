@@ -2,6 +2,9 @@ package bb.spring.boot.thrift.client;
 
 import bb.spring.boot.thrift.client.annotation.ThriftClient;
 import bb.spring.boot.thrift.client.pool.ThriftKey;
+import com.netflix.hystrix.HystrixCommand;
+import com.netflix.hystrix.HystrixCommandGroupKey;
+import com.netflix.hystrix.HystrixCommandKey;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.apache.commons.pool2.KeyedObjectPool;
 import org.apache.thrift.TException;
@@ -20,6 +23,7 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -128,15 +132,39 @@ public class ThriftClientAnnotationBeanPostProcessor implements BeanPostProcesso
             TServiceClient thriftClient = null;
             try {
                 thriftClient = thriftClientsPool.borrowObject(key);
-                return ReflectionUtils.invokeMethod(methodInvocation.getMethod(), thriftClient, args);
+                HystrixServiceClient hystrixServiceClient = new HystrixServiceClient(thriftClient, methodInvocation.getMethod(), args);
+                return hystrixServiceClient.execute();
             } catch (UndeclaredThrowableException e) {
                 if (TException.class.isAssignableFrom(e.getUndeclaredThrowable().getClass()))
                     throw (TException) e.getUndeclaredThrowable();
                 throw e;
             } finally {
-                if (null != thriftClient)
+                if (null != thriftClient) {
                     thriftClientsPool.returnObject(key, thriftClient);
+                }
             }
         });
+    }
+
+    private class HystrixServiceClient extends HystrixCommand<Object> {
+
+        private final TServiceClient serviceClient;
+        private final Method method;
+        private final Object[] args;
+
+        private HystrixServiceClient(final TServiceClient serviceClient, final Method method, final Object[] args) {
+            super(HystrixCommand.Setter
+                    .withGroupKey(HystrixCommandGroupKey.Factory.asKey(serviceClient.getClass().getName()))
+                    .andCommandKey(HystrixCommandKey.Factory.asKey(serviceClient.getClass().getName() + "." + method.getName()))
+            );
+            this.serviceClient = serviceClient;
+            this.method = method;
+            this.args = args;
+        }
+
+        @Override
+        protected Object run() throws Exception {
+            return ReflectionUtils.invokeMethod(method, serviceClient, args);
+        }
     }
 }
