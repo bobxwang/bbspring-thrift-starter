@@ -33,9 +33,9 @@
 #### 已有功能
 * 扩展**TTransport**支持从注册中心获取服务列表并根据既定策略进行负载，详见**TLoadBalancerClient**类，利用[Netflix](https://github.com/netflix/ribbon)
 * 服务端添加Metrics支持，统计各服务响应时间及各方法调用次数 
+* 封装**TServiceClient**支持超时熔断保护利用[Hystrix](https://github.com/netflix/hystrix)
 
 #### 待做功能 
-* 扩展**TServiceClient**支持超时熔断保护及故障时的主备切换等策略
 * 扩展**TProtocol**支持调用信息采集操作
 * 扩展**TProcessor**支持信息采集操作及安全监测
 * 服务请求链路上下文调用链路传递
