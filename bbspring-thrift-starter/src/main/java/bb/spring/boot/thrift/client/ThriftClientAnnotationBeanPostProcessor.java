@@ -122,6 +122,7 @@ public class ThriftClientAnnotationBeanPostProcessor implements BeanPostProcesso
     @SuppressWarnings("unchecked")
     private void addPoolAdvice(ProxyFactory proxyFactory, ThriftClient annotation) {
 
+        // AOP代理增强
         proxyFactory.addAdvice((MethodInterceptor) methodInvocation -> {
             Object[] args = methodInvocation.getArguments();
             Class<? extends TServiceClient> declaringClass = (Class<? extends TServiceClient>) methodInvocation.getMethod().getDeclaringClass();
