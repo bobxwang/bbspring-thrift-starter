@@ -24,9 +24,9 @@
   </pre>
 * 相关配置
   <pre>bbthriftserver:
-  		endpoint:  #cloud情况下默认为空，非空就是直连
-  		connectTimeout: 1000
-  		readTimeout: 10000    
+	endpoint:  #cloud情况下默认为空，非空就是直连
+	connectTimeout: 1000
+	readTimeout: 10000    
   thrift.client.max.threads: 10  #默认即10
   </pre>
   
