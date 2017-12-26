@@ -6,10 +6,10 @@
 
   <pre>@ThriftController(value = "/thriftcaclcu")
   public class CalculatorController implements TCalculatorService.Iface {    
-  		@Override    
-  		public int calculate(int num1, int num2, TOperation op) throws TException{ 
-  		// your code
-  		}
+	@Override    
+	public int calculate(int num1, int num2, TOperation op) throws TException{ 
+		// your code
+	}
   }
   </pre>
  
